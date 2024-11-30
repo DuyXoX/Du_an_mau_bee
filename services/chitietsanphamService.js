@@ -54,7 +54,7 @@ const getAllChiTietSanPham = async () => {
     }
 };
 
-const addChiTietSanPham = async (sanPhamId, loaiChiTiet, gia, soLuong) => {
+const addChiTietSanPham = async (sanPhamId, loaiChiTiet, moTaChiTiet, gia, soLuong) => {
     try {
         // Kiểm tra nếu sản phẩm có tồn tại trong cơ sở dữ liệu
         const sanPham = await SanPham.findByPk(sanPhamId);
@@ -66,6 +66,7 @@ const addChiTietSanPham = async (sanPhamId, loaiChiTiet, gia, soLuong) => {
         const newChiTietSanPham = await ChiTietSanPham.create({
             SanPhamId: sanPhamId,
             LoaiChiTiet: loaiChiTiet,
+            MoTaChiTiet: moTaChiTiet,
             Gia: gia,
             SoLuong: soLuong,
         });
@@ -76,7 +77,7 @@ const addChiTietSanPham = async (sanPhamId, loaiChiTiet, gia, soLuong) => {
     }
 };
 
-const updateChiTietSanPham = async (chiTietSanPhamId, sanPhamId, loaiChiTiet, gia, soLuong) => {
+const updateChiTietSanPham = async (chiTietSanPhamId, sanPhamId, loaiChiTiet, moTaChiTiet, gia, soLuong) => {
     try {
         // Kiểm tra nếu chi tiết sản phẩm có tồn tại trong cơ sở dữ liệu
         const chiTietSanPham = await ChiTietSanPham.findByPk(chiTietSanPhamId);
@@ -91,7 +92,9 @@ const updateChiTietSanPham = async (chiTietSanPhamId, sanPhamId, loaiChiTiet, gi
         }
 
         // Cập nhật chi tiết sản phẩm
+        // const {LoaiChiTiet}=chiTietSanPham
         chiTietSanPham.LoaiChiTiet = loaiChiTiet || chiTietSanPham.LoaiChiTiet;  // Nếu không truyền, giữ nguyên giá trị cũ
+        chiTietSanPham.MoTaChiTiet = moTaChiTiet || chiTietSanPham.MoTaChiTiet;
         chiTietSanPham.Gia = gia || chiTietSanPham.Gia; // Cập nhật nếu có giá mới
         chiTietSanPham.SoLuong = soLuong || chiTietSanPham.SoLuong; // Cập nhật nếu có số lượng mới
 

@@ -24,7 +24,7 @@ const showAllChiTietSanPham = async (req, res) => {
 };
 
 const addChiTietSanPham = async (req, res) => {
-    const { sanPhamId, loaiChiTiet, gia, soLuong } = req.body;
+    const { sanPhamId, loaiChiTiet, moTaChiTiet, gia, soLuong } = req.body;
 
     if (!sanPhamId || !loaiChiTiet || !gia || !soLuong) {
         return res.status(201).json({ warning: 'Dữ liệu không hợp lệ' });
@@ -34,6 +34,7 @@ const addChiTietSanPham = async (req, res) => {
         await chitietsanpham.addChiTietSanPham(
             sanPhamId,
             loaiChiTiet,
+            moTaChiTiet,
             gia,
             soLuong
         );
@@ -50,11 +51,11 @@ const addChiTietSanPham = async (req, res) => {
 
 const updateChiTietSanPham = async (req, res) => {
     const { id } = req.params; // Lấy id từ URL
-    const { sanPhamId, loaiChiTiet, gia, soLuong } = req.body; // Lấy dữ liệu từ request body
+    const { sanPhamId, loaiChiTiet, moTaChiTiet, gia, soLuong } = req.body; // Lấy dữ liệu từ request body
 
     try {
         // Gọi service để cập nhật chi tiết sản phẩm
-        await chitietsanpham.updateChiTietSanPham(id, sanPhamId, loaiChiTiet, gia, soLuong);
+        await chitietsanpham.updateChiTietSanPham(id, sanPhamId, loaiChiTiet, moTaChiTiet, gia, soLuong);
 
         // Trả về kết quả
         res.status(200).json({

@@ -12,6 +12,7 @@ const chitietsanphamRoutes = require('./chitietsanphamRoutes');
 const { isAdmin, isManager, checkLogin } = require('../middlewares/authMiddleware');
 const userAuthen = require('./userAuthen');
 const userRoutes = require('./userRoutes');
+const emailRouter = require('./email');
 const apiRouter = express.Router();
 
 apiRouter.use('/', loginsignupRouter);
@@ -29,6 +30,7 @@ apiRouter.use('/', ThanhToan);
 
 apiRouter.use('/', chitietsanphamRoutes);
 apiRouter.use('/cart', checkLogin, cartRoutes);
+apiRouter.use('/email', emailRouter)
 // apiRouter.use('/DVT', donvitinhRoutes);
 // apiRouter.use('/', donhangRoutes);
 // apiRouter.use('/', chitietsanphamRoutes);

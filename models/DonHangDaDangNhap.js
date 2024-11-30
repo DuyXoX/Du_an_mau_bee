@@ -21,7 +21,7 @@ const DonHangDaDangNhap = sequelize.define('DonHangDaDangNhap', {
     allowNull: false,
   },
   TrangThai: {
-    type: DataTypes.ENUM('dangxu ly', 'Chờ Giao Hàng', 'Đang Giao', 'Hoàn Thành', 'Hủy'),
+    type: DataTypes.ENUM('dangxu ly', 'chogiaohang', 'danggiao', 'hoantat', 'huy'),
     defaultValue: 'dangxu ly',
   },
   ThoiGianTao: {

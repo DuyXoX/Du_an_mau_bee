@@ -77,7 +77,7 @@ const getAllProducts = async () => {
             attributes: ['DuongDanHinh'], // Chỉ lấy đường dẫn hình ảnh
         }, {
             model: ChiTietSanPham, // Thêm chi tiết sản phẩm vào truy vấn
-            attributes: ['ChiTietSanPhamId', 'LoaiChiTiet', 'Gia', 'SoLuong'], // Chỉ lấy loại chi tiết, giá và số lượng
+            attributes: ['ChiTietSanPhamId', 'LoaiChiTiet', 'MoTaChiTiet', 'Gia', 'SoLuong'], // Chỉ lấy loại chi tiết, giá và số lượng
         },
         {
             model: DonViTinh, // Thêm DonViTinh vào truy vấn
@@ -101,6 +101,7 @@ const getAllProducts = async () => {
             PhanLoai: sortedDetails.map(detail => ({
                 ChiTietSanPhamId: detail.ChiTietSanPhamId,
                 LoaiChiTiet: detail.LoaiChiTiet,
+                MoTaChiTiet: detail.MoTaChiTiet,
                 Gia: detail.Gia,
                 SoLuong: detail.SoLuong,
             })),
@@ -189,7 +190,7 @@ const getProductById = async (sanPhamId) => {
         },
         {
             model: ChiTietSanPham, // Thêm chi tiết sản phẩm vào truy vấn
-            attributes: ['ChiTietSanPhamId', 'LoaiChiTiet', 'Gia', 'SoLuong'], // Chỉ lấy loại chi tiết, giá và số lượng
+            attributes: ['ChiTietSanPhamId', 'LoaiChiTiet', 'MoTaChiTiet', 'Gia', 'SoLuong'], // Chỉ lấy loại chi tiết, giá và số lượng
         },
         {
             model: DonViTinh, // Thêm mô hình LoaiSanPham
@@ -218,6 +219,7 @@ const getProductById = async (sanPhamId) => {
         Gia: sortedDetails.map(detail => ({
             ChiTietSanPhamId: detail.ChiTietSanPhamId,
             LoaiChiTiet: detail.LoaiChiTiet,
+            MoTaChiTiet: detail.MoTaChiTiet,
             Gia: detail.Gia,
             SoLuong: detail.SoLuong,
         })),
