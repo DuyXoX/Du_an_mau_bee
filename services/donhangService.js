@@ -111,12 +111,12 @@ exports.getDonHangByall = async (NguoiDungId) => {
     });
 
     if (donHangs.length === 0) {
-      return { message: 'Không tìm thấy đơn hàng', status: 404 };
+      return [];
     }
 
     // Chuẩn hóa dữ liệu trả về
     const result = donHangs.map(donHang => ({
-      DonHangId: donHang.id, // ID của đơn hàng
+      DonHangId: donHang.NguoiDungId, // ID của đơn hàng
       TongTien: donHang.TongTien, // Tổng tiền của đơn hàng
       TrangThai: donHang.TrangThai, // Trạng thái đơn hàng
       SanPham: donHang.ChiTietDonHangDaDangNhaps.map(detail => ({
@@ -213,7 +213,7 @@ exports.getDonHangById = async (DonHangId) => {
     const ThoiGiaTao = moment(donHang.ThoiGianTao).tz('Asia/Ho_Chi_Minh').format('HH:mm:ss DD-MM-YYYY');
     // return ThoiGiaTao;
     if (!donHang) {
-      return { message: 'Không tìm thấy đơn hàng', status: 404 };
+      return { warning: 'Không tìm thấy đơn hàng', status: 201 };
     }
 
     // Lấy thông tin người dùng của đơn hàng (địa chỉ và số điện thoại) nếu có
@@ -223,7 +223,7 @@ exports.getDonHangById = async (DonHangId) => {
     });
 
     if (!user) {
-      return { message: 'Không tìm thấy thông tin người dùng', status: 404 };
+      return { warning: 'Không tìm thấy thông tin người dùng', status: 201 };
     }
 
     const pay = await ThanhToan.findOne({

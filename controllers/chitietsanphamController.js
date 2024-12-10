@@ -4,7 +4,7 @@ const chitietsanpham = require('../services/chitietsanphamService');
 // Hàm lấy tất cả chi tiết sản phẩm
 // Lấy tất cả loại sản phẩm
 const fetchChiTietSanPham = async (req, res) => {
-    const sanPhamId = req.params.id; // Giả sử bạn lấy SanPhamId từ params của URL
+    const sanPhamId = req.params.NguoiDungId; // Giả sử bạn lấy SanPhamId từ params của URL
 
     try {
         const chiTietSanPhamList = await chitietsanpham.getChiTietSanPham(sanPhamId);

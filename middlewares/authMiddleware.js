@@ -9,6 +9,7 @@ const verifyToken = (token) => {
         return null;
     }
 }
+
 const checkLogin = (req, res, next) => {
     const tokenUser = req.session.user;
     if (tokenUser) {
@@ -30,14 +31,16 @@ const checkLogin = (req, res, next) => {
 
 const checkRole = (requiredRoles) => async (req, res, next) => {
     const userID = req.session.user;
+    // return res.json({ userID });
+
     if (!userID) {
         return res.status(404).json({ error: 'Bạn chưa đăng nhập.' });
     }
     try {
-        const data = verifyToken(userID)
+        const data = verifyToken(userID).NguoiDungId;
         // return res.json({ message: 'check >>>>>>>>>>>>>>>>>>>:', data });
 
-        const user = await User.findByPk(data.id, { attributes: ['NguoiDungId', 'VaiTro'] });
+        const user = await User.findByPk(data, { attributes: ['NguoiDungId', 'VaiTro'] });
         // return res.json({ message: 'check >>>>>>>>>>>>>>>>>>>:', user });
 
         if (!user) {

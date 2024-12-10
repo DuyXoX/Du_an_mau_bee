@@ -124,7 +124,7 @@ const addToCart = async (req, SanPhamId, SoLuong, ChiTietSanPhamId) => {
         try {
             // Giải mã token để lấy thông tin người dùng
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            userId = decoded.id; // Lấy NguoiDungId từ token
+            userId = decoded.NguoiDungId; // Lấy NguoiDungId từ token
         } catch (error) {
             console.error('Token không hợp lệ:', error);
             return { message: 'Token không hợp lệ.', status: 401 };
@@ -191,7 +191,7 @@ const updateCartProduct = async (req, SanPhamId, ChiTietSanPhamId, SoLuong) => {
     if (token) {
         try {
             const decoded = verifyToken(token);
-            userId = decoded.id;
+            userId = decoded.NguoiDungId;
             // console.log('check: ', user);
 
         } catch (error) {
@@ -237,7 +237,7 @@ const deleteCartProduct = async (req, SanPhamId, ChiTietSanPhamId) => {
         try {
             // Giải mã token để lấy thông tin người dùng
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            userId = decoded.id; // Lấy NguoiDungId từ token
+            userId = decoded.NguoiDungId; // Lấy NguoiDungId từ token
         } catch (error) {
             console.error('Token không hợp lệ:', error);
             return { message: 'Token không hợp lệ', status: 'error' };

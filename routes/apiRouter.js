@@ -13,24 +13,27 @@ const { isAdmin, isManager, checkLogin } = require('../middlewares/authMiddlewar
 const userAuthen = require('./userAuthen');
 const userRoutes = require('./userRoutes');
 const emailRouter = require('./email');
+const authenLoginSignupRouter = require('./authenLoginSignupRouter');
+const productProductTypeRouter = require('./productProductTypeRouter');
 const apiRouter = express.Router();
 
+apiRouter.use("/", authenLoginSignupRouter);
 apiRouter.use('/', loginsignupRouter);
-apiRouter.use('/user', checkLogin, userRoutes);
-apiRouter.use('/user', checkLogin, isManager, isAdmin, userAuthen);
-
-// apiRouter.use('/loaisanpham', producttypeRoutes);
-apiRouter.use('/', productRouter);
-apiRouter.use('/', producttypeRoutes);
 apiRouter.use('/', donvitinhRoutes);
-
-apiRouter.use('/', donhangRoutes);
-apiRouter.use('/', paymentzalo);
-apiRouter.use('/', ThanhToan);
-
-apiRouter.use('/', chitietsanphamRoutes);
-apiRouter.use('/cart', checkLogin, cartRoutes);
 apiRouter.use('/email', emailRouter)
+apiRouter.use('/', productRouter);
+
+
+apiRouter.use('/cart', checkLogin, cartRoutes);
+apiRouter.use('/user', checkLogin, userRoutes);
+apiRouter.use('/', checkLogin, donhangRoutes);
+apiRouter.use('/', checkLogin, paymentzalo);
+apiRouter.use('/', checkLogin, ThanhToan);
+
+apiRouter.use('/user', checkLogin, isManager, isAdmin, userAuthen);
+apiRouter.use('/', checkLogin, isManager, isAdmin, producttypeRoutes);
+apiRouter.use('/', checkLogin, isManager, isAdmin, chitietsanphamRoutes);
+
 // apiRouter.use('/DVT', donvitinhRoutes);
 // apiRouter.use('/', donhangRoutes);
 // apiRouter.use('/', chitietsanphamRoutes);

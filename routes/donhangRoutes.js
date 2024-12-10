@@ -3,6 +3,7 @@
 const express = require('express');
 const DonHang = express.Router();
 const donhangController = require('../controllers/donhangController');
+const { isManager, isAdmin } = require('../middlewares/authMiddleware');
 
 // Tạo đơn hàng mới
 // router.post('/donhang', donhangController.createDonHang);
@@ -18,19 +19,17 @@ DonHang.get('/donhang/:NguoiDungId', async (req, res) => {
     return await donhangController.getDonHangController(req, res);
 });
 // Lấy đơn hàng theo ID
-// router.get('/donhang/:DonHangId', donhangController.getDonHangById);
-DonHang.get('/quanly/donhang/:DonHangId', async (req, res) => {
+DonHang.get('/quanly/donhang/:DonHangId', isManager, isAdmin, async (req, res) => {
     return await donhangController.getDonHangById(req, res);
 });
 // Lấy chi tiết đơn hàng theo DonHangId
-// router.get('/chitietdonhang/:DonHangId', donhangController.getChiTietDonHangByDonHangId);
 DonHang.get('/chitietdonhang/:DonHangId', async (req, res) => {
     return await donhangController.getChiTietDonHangByDonHangId(req, res);
 });
-DonHang.get('/donhangall', async (req, res) => {
+DonHang.get('/donhangall', isManager, isAdmin, async (req, res) => {
     return await donhangController.getDonHangByall0(req, res);
 });
-DonHang.put('/donhang/:DonHangId', async (req, res) => {
+DonHang.put('/donhang/:DonHangId', isManager, isAdmin, async (req, res) => {
     return await donhangController.updateOrderStatus(req, res);
 });
 

@@ -133,8 +133,8 @@ exports.getDonHangController = async (req, res) => {
     const donHangData = await donHangService.getDonHangByall(NguoiDungId); // Gọi service
 
     // Kiểm tra kết quả từ service và trả về phản hồi phù hợp
-    if (donHangData.status === 404) {
-      return res.status(404).json(donHangData);
+    if (donHangData.status === 201) {
+      return res.status(201).json(donHangData);
     }
 
     if (donHangData.status === 500) {

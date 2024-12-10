@@ -47,6 +47,7 @@ const sendEmail = async (req, res) => {
         .email-body {
             padding: 20px;
             text-align: center;
+            background-color:#f3fffe;
         }
 
         .email-body p {

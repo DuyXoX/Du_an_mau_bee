@@ -1,9 +1,7 @@
 const express = require('express');
 const DonViTinh = express.Router();
-const { getproducttype , postproducttype , putproducttype ,deleteproducttype } = require('../controllers/donvitinhController');
+const { getproducttype, postproducttype, putproducttype, deleteproducttype } = require('../controllers/donvitinhController');
 
-
-// Route để lấy danh sách loaisp
 // router.get('/DVT', getproducttype);
 DonViTinh.get('/dvt', async (req, res) => {
     return await getproducttype(req, res);

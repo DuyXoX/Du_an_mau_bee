@@ -19,12 +19,12 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     const token = req.session.user;
-    const nguoiDungId = verifyToken(token);
-    // return res.json({ 'check': nguoiDungId.id })
+    const nguoiDungId = verifyToken(token).NguoiDungId;
+    // return res.json({ 'check': nguoiDungId.NguoiDungId })
     try {
         // Tìm người dùng theo NguoiDungId
         const user = await User.findOne({
-            where: { NguoiDungId: nguoiDungId.id }, // Điều kiện tìm kiếm
+            where: { NguoiDungId: nguoiDungId }, // Điều kiện tìm kiếm
             attributes: ['NguoiDungId', 'TenDangNhap', 'Account', 'DiaChi', 'SoDienThoai', 'VaiTro'] // Lấy các trường cần thiết
         });
         // return res.json({ 'check': user })
@@ -340,7 +340,7 @@ const updateUserSDT = async (req, res) => {
     // return res.status(200).json({ message: NguoiDungId.id });
     try {
         const user = await User.findOne({
-            where: { NguoiDungId: NguoiDungId.id }
+            where: { NguoiDungId: NguoiDungId.NguoiDungId }
         });
 
         if (!user) {
@@ -351,7 +351,7 @@ const updateUserSDT = async (req, res) => {
             SoDienThoai
         },
             {
-                where: { NguoiDungId: NguoiDungId.id },
+                where: { NguoiDungId: NguoiDungId.NguoiDungId },
             });
         return res.status(200).json({ message: 'Số điện thoại đã được cập nhật thành công!', updatedUser });
 
@@ -368,7 +368,7 @@ const updateUserDiaChi = async (req, res) => {
     // return res.status(200).json({ message: NguoiDungId.id });
     try {
         const user = await User.findOne({
-            where: { NguoiDungId: NguoiDungId.id }
+            where: { NguoiDungId: NguoiDungId.NguoiDungId }
         });
 
         if (!user) {
@@ -379,7 +379,7 @@ const updateUserDiaChi = async (req, res) => {
             DiaChi
         },
             {
-                where: { NguoiDungId: NguoiDungId.id },
+                where: { NguoiDungId: NguoiDungId.NguoiDungId },
             });
         return res.status(200).json({ message: 'Địa chỉ đã được cập nhật thành công!', updatedUser });
 

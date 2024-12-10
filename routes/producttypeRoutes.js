@@ -2,11 +2,6 @@ const express = require('express');
 const productTypeRouter = express.Router();
 const { getproducttype, postproducttype, putproducttype, deleteproducttype, deleteproducttypes } = require('../controllers/producttypeController');
 
-// Route để lấy danh sách loại sản phẩm
-productTypeRouter.get('/loaisp', async (req, res) => {
-    return await getproducttype(req, res);
-});
-
 // Route để thêm loại sản phẩm
 productTypeRouter.post('/loaisp', async (req, res) => {
     return await postproducttype(req, res);

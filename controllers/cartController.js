@@ -17,8 +17,8 @@ const getCart = async (req, res) => {
 
     try {
         const user = verifyToken(token);
-        // return res.json(user.id)
-        const cartData = await cartService.getCart(user.id); // Gọi service với NguoiDungId
+        // return res.json(user.NguoiDungId)
+        const cartData = await cartService.getCart(user.NguoiDungId); // Gọi service với NguoiDungId
         // return res.json({ cartData })
         // Kiểm tra cartData để đảm bảo nó không bị undefined
         if (!cartData) {
