@@ -9,6 +9,7 @@ const SanPham = require('../models/productModel');
 const ChiTietSanPham = require('../models/chitietsanphamModels');
 const HinhAnhSanPham = require('../models/imgproductModel');
 const ThanhToan = require('../models/thanhtoanModel');
+const donhangService = require('../services/chiTietDonHangService');
 const moment = require('moment-timezone');
 
 
@@ -30,6 +31,18 @@ exports.createDonHang = async (NguoiDungId, TongTien, TrangThai, chiTietSanPhamL
       return { warning: 'Bạn chưa cung cấp đầy đủ thông tin (Địa chỉ và Số điện thoại)', status: 201 };
     }
 
+    // Kiểm tra số lượng sản phẩm cho mỗi sản phẩm trong chiTietSanPhamList
+    for (const chiTiet of chiTietSanPhamList) {
+      const chiTietSanPham = await ChiTietSanPham.findOne({
+        where: { ChiTietSanPhamId: chiTiet.ChiTietSanPhamId },
+      });
+      // Nếu không tìm thấy sản phẩm hoặc số lượng không đủ
+
+      if (chiTietSanPham.SoLuong < chiTiet.SoLuong) {
+        return { warning: `Không đủ số lượng sản phẩm còn lại trong kho: ${chiTietSanPham.SoLuong}`, status: 201 };
+      }
+    }
+
     // Tạo đơn hàng
     const donHang = await DonHangDaDangNhap.create({
       NguoiDungId,
@@ -40,13 +53,17 @@ exports.createDonHang = async (NguoiDungId, TongTien, TrangThai, chiTietSanPhamL
 
     // Tạo chi tiết đơn hàng cho từng sản phẩm
     for (const chiTiet of chiTietSanPhamList) {
-      await ChiTietDonHangDaDangNhap.create({
-        DonHangId: donHang.DonHangId,
-        SanPhamId: chiTiet.SanPhamId,
-        ChiTietSanPhamId: chiTiet.ChiTietSanPhamId,
-        SoLuong: chiTiet.SoLuong,
-        Gia: chiTiet.Gia,
+      await donhangService.createChiTietDonHang(donHang.DonHangId, chiTiet.SanPhamId, chiTiet.ChiTietSanPhamId, chiTiet.SoLuong, chiTiet.Gia);
+
+      // Cập nhật số lượng sản phẩm sau khi thêm vào đơn hàng
+      const chiTietSanPham = await ChiTietSanPham.findOne({
+        where: { ChiTietSanPhamId: chiTiet.ChiTietSanPhamId },
       });
+
+      await ChiTietSanPham.update(
+        { SoLuong: chiTietSanPham.SoLuong - chiTiet.SoLuong },
+        { where: { ChiTietSanPhamId: chiTiet.ChiTietSanPhamId } }
+      );
     }
 
     // Xóa sản phẩm khỏi giỏ hàng sau khi tạo đơn hàng thành công
@@ -140,7 +157,7 @@ exports.getAllDonHangall0 = async () => {
   try {
     // Lấy tất cả thông tin từ bảng DonHangDaDangNhap kèm theo thông tin người dùng từ bảng NguoiDung
     const donHangs = await DonHangDaDangNhap.findAll({
-      attributes: ['DonHangId', 'NguoiDungId', 'TongTien', 'TrangThai'], // Các trường cần thiết từ bảng DonHangDaDangNhap
+      attributes: ['DonHangId', 'NguoiDungId', 'TongTien', 'TrangThai', 'ThoiGianTao'], // Các trường cần thiết từ bảng DonHangDaDangNhap
       include: [
         {
           model: NguoiDung, // Liên kết với bảng NguoiDung
@@ -150,6 +167,7 @@ exports.getAllDonHangall0 = async () => {
         {
           model: ChiTietDonHangDaDangNhap,
           required: true,
+          attributes: ['ChiTietDonHangId', 'SanPhamId', 'SoLuong'],
           include: [
             {
               model: SanPham,

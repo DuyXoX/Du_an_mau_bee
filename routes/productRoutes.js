@@ -12,9 +12,15 @@ productRouter.get('/sanpham', async (req, res) => {
 productRouter.get('/sanpham/:id', async (req, res) => {
     return await getProductById(req, res);
 });
+
 productRouter.get('/search', async (req, res) => {
     return await searchProducts(req, res);
 });
+
+productRouter.get('/v2/sanpham', checkLogin, isManager, isAdmin, async (req, res) => {
+    return await getproduct(req, res);
+});
+
 // Route để thêm SP
 productRouter.post('/sanpham', checkLogin, isManager, isAdmin, (req, res) => {
     upload(req, res, async (err) => {
@@ -49,6 +55,10 @@ productRouter.post('/sanpham/delete', checkLogin, isManager, isAdmin, async (req
 });
 
 productRouter.get('/loaisp', async (req, res) => {
+    return await getproducttype(req, res);
+});
+
+productRouter.get('/v2/loaisp', checkLogin, isManager, isAdmin, async (req, res) => {
     return await getproducttype(req, res);
 });
 

@@ -32,8 +32,6 @@ exports.createDonHang = async (req, res) => {
   }
 };
 
-
-
 // Tạo chi tiết đơn hàng mới
 exports.createChiTietDonHang = async (req, res) => {
   try {
@@ -92,9 +90,11 @@ exports.getDonHangByall0 = async (req, res) => {
       TenDangNhap: donHang.NguoiDung ? donHang.NguoiDung.TenDangNhap : null, // Lấy TenNguoiDung từ bảng NguoiDung
       DiaChi: donHang.NguoiDung ? donHang.NguoiDung.DiaChi : null, // Lấy DiaChi từ bảng NguoiDung
       SoDienThoai: donHang.NguoiDung ? donHang.NguoiDung.SoDienThoai : null, // Lấy SoDienThoai từ bảng NguoiDung
-
-
-
+      ThoiGianTao: donHang.ThoiGianTao,
+      SanPham: donHang.ChiTietDonHangDaDangNhaps.map(tenSP => ({
+        SanPhamId: tenSP.SanPhamId,
+        TenSanPham: tenSP.SanPham.TenSanPham,
+      })),
     }));
 
     return res.status(200).json(result); // Trả về kết quả dưới dạng JSON
@@ -126,6 +126,7 @@ exports.updateOrderStatus = async (req, res) => {
     return res.status(500).json({ message: 'Đã xảy ra lỗi' });
   }
 };
+
 exports.getDonHangController = async (req, res) => {
   const NguoiDungId = req.params.NguoiDungId; // Lấy NguoiDungId từ URL
 

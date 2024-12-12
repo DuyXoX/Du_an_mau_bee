@@ -52,7 +52,6 @@ const createProduct = async (productData) => {
     return { message: 'Sản phẩm đã được tạo thành công!', sanPhamId: newProduct.SanPhamId, status: 'success' };
 };
 
-
 // xóa sản phẩm
 const deleteProduct = async (productId) => {
     // Kiểm tra sản phẩm có tồn tại không
@@ -169,7 +168,8 @@ const searchProductsByName = async (name, minPrice, maxPrice, loaiSanPhamId) => 
                 ThoiGianCapNhat: productData.ThoiGianCapNhat,
                 LoaiSanPhamId: productData.LoaiSanPhamId,
                 DonViTinhID: productData.DonViTinhID,
-                HinhAnh: productData.HinhAnhSanPhams.map(image => `http://localhost:8000/api/${image.DuongDanHinh.replace(/\\/g, '/')}`), // Cập nhật đường dẫn hình ảnh
+                HinhAnh: productData.HinhAnhSanPhams
+                // HinhAnh: productData.HinhAnhSanPhams.map(image => `http://localhost:8000/api/${image.DuongDanHinh.replace(/\\/g, '/')}`), // Cập nhật đường dẫn hình ảnh
             };
         });
     } catch (error) {
@@ -230,6 +230,5 @@ const getProductById = async (sanPhamId) => {
         HinhAnh: productData.HinhAnhSanPhams
     };
 };
-
 
 module.exports = { createProduct, deleteProduct, getAllProducts, searchProductsByName, getProductById };
