@@ -114,31 +114,17 @@ const getAllProducts = async () => {
     });
 };
 
-const searchProductsByName = async (name, minPrice, maxPrice, loaiSanPhamId) => {
+const searchProductsByName = async (TenSanPham) => {
+    // return { TenSanPham }
+
     try {
-        // Khởi tạo một object để chứa các điều kiện tìm kiếm
         const whereConditions = {};
 
-        // Nếu có tên sản phẩm, thêm điều kiện tìm kiếm theo tên
-        if (name) {
+        // Thêm điều kiện tìm kiếm theo tên sản phẩm
+        if (TenSanPham) {
             whereConditions.TenSanPham = {
-                [Op.like]: `%${name}%` // Tìm kiếm với điều kiện LIKE
+                [Op.like]: `%${TenSanPham}%` // Tìm kiếm với điều kiện LIKE
             };
-        }
-
-        // Nếu có giá tối thiểu, thêm vào điều kiện
-        if (minPrice) {
-            whereConditions.Gia = { [Op.gte]: minPrice }; // Giá lớn hơn hoặc bằng minPrice
-        }
-
-        // Nếu có giá tối đa, thêm vào điều kiện
-        if (maxPrice) {
-            whereConditions.Gia = { ...whereConditions.Gia, [Op.lte]: maxPrice }; // Giá nhỏ hơn hoặc bằng maxPrice
-        }
-
-        // Nếu có loại sản phẩm ID, thêm vào điều kiện
-        if (loaiSanPhamId) {
-            whereConditions.LoaiSanPhamId = loaiSanPhamId; // Thêm điều kiện tìm theo loại sản phẩm
         }
 
         // Tìm kiếm sản phẩm với các điều kiện
@@ -151,31 +137,38 @@ const searchProductsByName = async (name, minPrice, maxPrice, loaiSanPhamId) => 
                 },
                 {
                     model: LoaiSanPham,
-                    attributes: [], // Không lấy thuộc tính nào từ loại sản phẩm
+                    attributes: ['TenLoai'], // Không lấy thuộc tính nào từ loại sản phẩm
+                },
+                {
+                    model: ChiTietSanPham,
+                    attributes: ['LoaiChiTiet', 'Gia'],
                 }
             ],
         });
 
+        // Chuyển đổi dữ liệu sản phẩm
         return products.map(product => {
             const productData = product.toJSON();
             return {
+                // data: productData.ChiTietSanPhams.map((item) => ({
+                //     Gia: item.Gia
+                // }))
                 SanPhamId: productData.SanPhamId,
                 TenSanPham: productData.TenSanPham,
-                MoTa: productData.MoTa,
-                Gia: productData.Gia,
-                SoLuongKho: productData.SoLuongKho,
-                ThoiGianTao: productData.ThoiGianTao,
-                ThoiGianCapNhat: productData.ThoiGianCapNhat,
                 LoaiSanPhamId: productData.LoaiSanPhamId,
+                SanPham: productData.ChiTietSanPhams.map((item) => ({
+                    Gia: item.Gia,
+                    LoaiChiTiet: item.LoaiChiTiet
+                })),
                 DonViTinhID: productData.DonViTinhID,
                 HinhAnh: productData.HinhAnhSanPhams
-                // HinhAnh: productData.HinhAnhSanPhams.map(image => `http://localhost:8000/api/${image.DuongDanHinh.replace(/\\/g, '/')}`), // Cập nhật đường dẫn hình ảnh
             };
         });
     } catch (error) {
         throw new Error('Có lỗi xảy ra khi tìm kiếm sản phẩm: ' + error.message);
     }
 };
+
 // hiển thị theo ID
 const getProductById = async (sanPhamId) => {
     const product = await SanPham.findOne({

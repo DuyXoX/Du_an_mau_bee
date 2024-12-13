@@ -13,7 +13,7 @@ productRouter.get('/sanpham/:id', async (req, res) => {
     return await getProductById(req, res);
 });
 
-productRouter.get('/search', async (req, res) => {
+productRouter.get('/search/:TenSanPham', async (req, res) => {
     return await searchProducts(req, res);
 });
 
@@ -63,3 +63,4 @@ productRouter.get('/v2/loaisp', checkLogin, isManager, isAdmin, async (req, res)
 });
 
 module.exports = productRouter;
+// ```````

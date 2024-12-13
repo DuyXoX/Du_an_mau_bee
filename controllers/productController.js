@@ -258,34 +258,12 @@ const deleteproducts = async (req, res) => {
         res.status(500).json({ error: error.message }); // Xử lý lỗi
     }
 };
+
 const searchProducts = async (req, res) => {
-    const { name, minPrice, maxPrice, loaiSanPhamId } = req.query; // Lấy tên, giá từ query string
-
+    const { TenSanPham } = req.params; // Lấy tên, giá từ query string
     try {
-        let products;
-
-        // Điều kiện lấy tất cả sản phẩm nếu không có tham số nào được cung cấp
-        if (!name && !minPrice && !maxPrice && !loaiSanPhamId) {
-            products = await productService.getAllProducts(); // Gọi hàm lấy tất cả sản phẩm
-        } else {
-            // Khởi tạo một đối tượng chứa các điều kiện tìm kiếm
-            const searchConditions = {
-                name: name || '', // Tên sản phẩm, mặc định là chuỗi rỗng
-                minPrice: minPrice ? parseFloat(minPrice) : null, // Giá tối thiểu
-                maxPrice: maxPrice ? parseFloat(maxPrice) : null, // Giá tối đa
-                loaiSanPhamId: loaiSanPhamId ? parseInt(loaiSanPhamId) : null // Loại sản phẩm ID
-            };
-
-            // Gọi hàm tìm kiếm từ service
-            products = await productService.searchProductsByName(
-                searchConditions.name,
-                searchConditions.minPrice,
-                searchConditions.maxPrice,
-                searchConditions.loaiSanPhamId
-            );
-        }
-
-        res.status(200).json(products); // Trả về danh sách sản phẩm
+        const products = await productService.searchProductsByName(TenSanPham);
+        return res.status(200).json(products); // Trả về danh sách sản phẩm
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
