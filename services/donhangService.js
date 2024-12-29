@@ -103,6 +103,7 @@ exports.getDonHangByall = async (NguoiDungId) => {
     // Lấy tất cả đơn hàng của người dùng
     const donHangs = await DonHangDaDangNhap.findAll({
       where: { NguoiDungId },
+      order: [['ThoiGianTao', 'DESC']],
       include: [
         {
           model: ChiTietDonHangDaDangNhap,
@@ -158,6 +159,7 @@ exports.getAllDonHangall0 = async () => {
     // Lấy tất cả thông tin từ bảng DonHangDaDangNhap kèm theo thông tin người dùng từ bảng NguoiDung
     const donHangs = await DonHangDaDangNhap.findAll({
       attributes: ['DonHangId', 'NguoiDungId', 'TongTien', 'TrangThai', 'ThoiGianTao'], // Các trường cần thiết từ bảng DonHangDaDangNhap
+      order: [['ThoiGianTao', 'DESC']],
       include: [
         {
           model: NguoiDung, // Liên kết với bảng NguoiDung
@@ -204,6 +206,7 @@ exports.getDonHangById = async (DonHangId) => {
     // Lấy thông tin đơn hàng theo DonHangId
     const donHang = await DonHangDaDangNhap.findOne({
       where: { DonHangId },
+      order: [['ThoiGianTao', 'DESC']],
       include: [
         {
           model: ChiTietDonHangDaDangNhap,
